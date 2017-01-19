@@ -27,6 +27,7 @@ also does something else:
 	-Dcom.sun.management.jmxremote.port=8901
 	-Dcom.sun.management.jmxremote.ssl=false
 	-Dcom.sun.management.jmxremote.authenticate=false"
+
 - To monitor request queue, you must use Executor in your Tomcat Connector, here is a sample configuration in server.xml:
 
 	<Executor name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="200" minSpareThreads="50" maxQueueSize="3000" />
