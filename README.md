@@ -22,16 +22,20 @@ also does something else:
 - Apache Tomcat 6.0 or higher
 - Tomcat instances must open JMX ports, here is a sample configuration in catalina.sh:
 
-	CATALINA_OPTS="$CATALINA_OPTS
-	-Dcom.sun.management.jmxremote
-	-Dcom.sun.management.jmxremote.port=8901
-	-Dcom.sun.management.jmxremote.ssl=false
-	-Dcom.sun.management.jmxremote.authenticate=false"
+```
+CATALINA_OPTS="$CATALINA_OPTS
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=8901
+-Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.authenticate=false"
+```
 
 - To monitor request queue, you must use Executor in your Tomcat Connector, here is a sample configuration in server.xml:
 
-	<Executor name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="200" minSpareThreads="50" maxQueueSize="3000" />
-	<Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol" executor="tomcatThreadPool" maxConnections="2000"/>
+```
+<Executor name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="200" minSpareThreads="50" maxQueueSize="3000" />
+<Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol" executor="tomcatThreadPool" maxConnections="2000"/>
+```
  
 note that the **maxConnections** must larger than **maxThreads**, otherwise there will be no request goes into the request queue of the Executor.
 Also, do not set **maxConnections** larger than **maxQueueSize**, otherwise some requests will be accepted by Connector and instantly rejected by Executor (because there are no rooms in the request queue)

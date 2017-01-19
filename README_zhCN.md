@@ -23,15 +23,20 @@ tomcat-alarmer监控复数个Apache Tomcat实例，并在特定情况下发出�
 - Apache Tomcat 6.0 或以上版本
 - Tomcat实例必须打开JMX端口，以下是catalina.sh中的配置样例：
 
-	CATALINA_OPTS="$CATALINA_OPTS
-	-Dcom.sun.management.jmxremote
-	-Dcom.sun.management.jmxremote.port=8901
-	-Dcom.sun.management.jmxremote.ssl=false
-	-Dcom.sun.management.jmxremote.authenticate=false"
+```
+CATALINA_OPTS="$CATALINA_OPTS
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=8901
+-Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.authenticate=false"
+```
+
 - 要让RequestQueue监控发挥作用，必须在Tomcat中配置Connector使用Executor，以下是server.xml中的配置样例：
 
-	<Executor name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="200" minSpareThreads="50" maxQueueSize="3000" />
-	<Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol" executor="tomcatThreadPool" maxConnections="2000"/>
+```
+<Executor name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="200" minSpareThreads="50" maxQueueSize="3000" />
+<Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol" executor="tomcatThreadPool" maxConnections="2000"/>
+```
  
 注意，**maxConnections**的数值必须大于**maxThreads**的数值，否则积压的请求将不会进入Executor的等待队列。
 同时，**maxConnections**的数值必须小于**maxQueueSize**，否则可能会出现请求被Connector受理，但无法加入Executor的队列，导致请求立即被拒绝。
